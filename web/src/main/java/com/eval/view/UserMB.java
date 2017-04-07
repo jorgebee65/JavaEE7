@@ -9,69 +9,83 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
 
+import com.eval.bo.PhoneBO;
 import com.eval.bo.UserBO;
 import com.eval.dao.UserDAOImpl;
 
-@ManagedBean 
+@ManagedBean
 @ViewScoped
 public class UserMB {
-   
-   private UserDAOImpl dao;
-   
-   public UserMB(){
-      userBO = new UserBO();
-      dao = new UserDAOImpl();
-   }
-   
-   private UserBO userBO;
-   private UserBO userSelected;
-  
-   
-   public List<UserBO> allUsers(){
-      return dao.obtenerTodos();
-   }
 
-   public void register(){
-      UserBO resp = dao.save(userBO);
-      if(resp!=null){
-         String msg = "User Registered successfully";
-         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-         RequestContext.getCurrentInstance().execute("PF('registrationDlg').hide();"); 
-      }
-   }
-   
-   public void delete(){
-      if(userSelected!=null){
-      if(dao.delete(userSelected)){
-         String msg = "User Deleted successfully";
-         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-      }}
-   }
-   
-   public void update(){
-      if(userSelected!=null){
-      if(dao.update(userSelected)){
-         String msg = "User Updated successfully";
-         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-      }}
-   }
+	private UserDAOImpl dao;
 
-   public UserBO getUserBO() {
-      return userBO;
-   }
+	public UserMB() {
+		userBO = new UserBO();
+		dao = new UserDAOImpl();
+	}
 
+	private UserBO userBO;
+	private UserBO userSelected;
 
+	public List<UserBO> allUsers() {
+		return dao.obtenerTodos();
+	}
 
-   public void setUserBO(UserBO userBO) {
-      this.userBO = userBO;
-   }
+	public void register() {
+		UserBO resp = dao.save(userBO);
+		if (resp != null) {
+			String msg = "User Registered successfully";
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+			RequestContext.getCurrentInstance().execute("PF('registrationDlg').hide();");
+		}
+	}
 
-   public UserBO getUserSelected() {
-      return userSelected;
-   }
+	public void delete() {
+		if (userSelected != null) {
+			if (dao.delete(userSelected)) {
+				String msg = "User Deleted successfully";
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+			}
+		}
+	}
 
-   public void setUserSelected(UserBO userSelected) {
-      this.userSelected = userSelected;
-   }
+	public void update() {
+		if (userSelected != null) {
+			if (dao.update(userSelected)) {
+				String msg = "User Updated successfully";
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+			}
+		}
+	}
+	
+	public void addPhone(){
+		userSelected.getPhones().add(new PhoneBO(userSelected));
+	}
+	
+	public void addNewPhone(){
+		userBO.getPhones().add(new PhoneBO(userSelected));
+	}
+
+	public void deletePhone(PhoneBO item) {
+		this.userSelected.getPhones().remove(item);
+	}
+
+	public UserBO getUserBO() {
+		return userBO;
+	}
+
+	public void setUserBO(UserBO userBO) {
+		this.userBO = userBO;
+	}
+
+	public UserBO getUserSelected() {
+		return userSelected;
+	}
+
+	public void setUserSelected(UserBO userSelected) {
+		this.userSelected = userSelected;
+	}
 
 }

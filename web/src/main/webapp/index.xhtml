@@ -1,57 +1,102 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Registration</title>
+	<h:outputStylesheet library="css" name="style.css" />
 </h:head>
 <body>
-	<p:messages id="globalMsgs" globalOnly="true" showDetail="true" closable="true" autoUpdate="true" />
+	<p:messages id="globalMsgs" globalOnly="true" showDetail="true"
+		closable="true" autoUpdate="true" />
 	<h:form id="allUsers">
 		<p:dataTable id="usersTbl" value="#{userMB.allUsers()}" var="user">
 			<p:column headerText="Name">    #{user.name}  </p:column>
 			<p:column headerText="Country">    #{user.sCountry}  </p:column>
+			<p:column headerText="Phone">
+				<p:dataList value="#{user.phones}" var="item" type="unordered" itemType="none">
+					<p:outputLabel value="#{item.number}" />
+				</p:dataList>
+			</p:column>
 			<p:column headerText="Select">
-				<p:commandButton icon="ui-icon-search" actionListener="#{userMB.setUserSelected(user)}" onclick="PF('updateDlg').show()" update="updateForm" />
-				<p:commandButton icon="ui-icon-trash" actionListener="#{userMB.setUserSelected(user)}" onclick="PF('cnfDlg').show()"/>
+				<p:commandButton icon="ui-icon-search"
+					actionListener="#{userMB.setUserSelected(user)}"
+					onclick="PF('updateDlg').show()" update="updateForm" />
+				<p:commandButton icon="ui-icon-trash"
+					actionListener="#{userMB.setUserSelected(user)}"
+					onclick="PF('cnfDlg').show()" />
 			</p:column>
 		</p:dataTable>
 	</h:form>
-	<p:commandButton onclick="PF('registrationDlg').show();" value="Register" />
-	<p:dialog id="registrationDlgId" widgetVar="registrationDlg" modal="true" header="Registration Form">
+	<p:commandButton onclick="PF('registrationDlg').show();"
+		value="Register" immediate="true" />
+	<p:dialog id="registrationDlgId" widgetVar="registrationDlg"
+		modal="true" header="Registration Form">
 		<h:form id="registrationForm">
-				<h:panelGrid columns="2">
-					<p:outputLabel value="Name:" />
-					<p:inputText value="#{userMB.userBO.name}" label="UserName" />
-					<p:outputLabel value="Country:" />
-					<p:selectOneMenu id="console" value="#{userMB.userBO.country}">
-						<f:selectItem itemLabel="US" itemValue="1" />
-						<f:selectItem itemLabel="UK" itemValue="2" />
-					</p:selectOneMenu>
-				</h:panelGrid>
-				<p:commandButton action="#{userMB.register}" value="Register" update="allUsers" />
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Name:" />
+				<p:inputText value="#{userMB.userBO.name}" label="UserName" />
+				<p:outputLabel value="Country:" />
+				<p:selectOneMenu id="console" value="#{userMB.userBO.country}">
+					<f:selectItem itemLabel="US" itemValue="1" />
+					<f:selectItem itemLabel="UK" itemValue="2" />
+				</p:selectOneMenu>
+				<p:outputLabel value="Phones:" />
+				<p:dataTable value="#{userMB.userBO.phones}" var="item"
+					styleClass="phoneColumn">
+					<p:column>
+						<p:inputText value="#{item.number}" styleClass="phoneInput" />
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{userMB.deletePhone(item)}" update="@form" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton icon="ui-icon-plus"
+					actionListener="#{userMB.addNewPhone()}" update="registrationForm" />
+			</h:panelGrid>
+			<p:commandButton action="#{userMB.register}" value="Register"
+				update="allUsers" />
 		</h:form>
 	</p:dialog>
-	<p:confirmDialog id="deleteDialog" widgetVar="cnfDlg" header="Confirmation" message="Are you sure to delete?">
-		<h:form >
-			<p:commandButton value="Yes" action="#{userMB.delete()}" oncomplete="PF('cnfDlg').hide()" update="allUsers" />
+	<p:confirmDialog id="deleteDialog" widgetVar="cnfDlg"
+		header="Confirmation" message="Are you sure to delete?">
+		<h:form>
+			<p:commandButton value="Yes" action="#{userMB.delete()}"
+				oncomplete="PF('cnfDlg').hide()" update="allUsers" />
 			<p:commandButton value="No" onclick="cnfDlg.hide();" />
 		</h:form>
 	</p:confirmDialog>
 	<p:dialog widgetVar="updateDlg" modal="true" header="Update Form">
 		<h:form id="updateForm">
-				<h:panelGrid columns="2">
-					<p:outputLabel value="ID:" />
-					<p:inputText readonly="true" disabled="true" value="#{userMB.userSelected.id}" />
-					<p:outputLabel value="Name:" />
-					<p:inputText value="#{userMB.userSelected.name}" label="UserName" />
-					<p:outputLabel value="Country:" />
-					<p:selectOneMenu id="console" value="#{userMB.userSelected.country}">
-						<f:selectItem itemLabel="US" itemValue="1" />
-						<f:selectItem itemLabel="UK" itemValue="2" />
-					</p:selectOneMenu>
-					<p:commandButton action="#{userMB.update()}" value="Update" oncomplete="PF('updateDlg').hide()"  update="allUsers" />
-				</h:panelGrid>
+			<h:panelGrid columns="2">
+				<p:outputLabel value="ID:" />
+				<p:inputText readonly="true" disabled="true"
+					value="#{userMB.userSelected.id}" />
+				<p:outputLabel value="Name:" />
+				<p:inputText value="#{userMB.userSelected.name}" label="UserName" />
+				<p:outputLabel value="Country:" />
+				<p:selectOneMenu id="console" value="#{userMB.userSelected.country}">
+					<f:selectItem itemLabel="US" itemValue="1" />
+					<f:selectItem itemLabel="UK" itemValue="2" />
+				</p:selectOneMenu>
+				<p:outputLabel value="Phones:" />
+				<p:dataTable value="#{userMB.userSelected.phones}" var="item"
+					styleClass="phoneColumn">
+					<p:column>
+						<p:inputText value="#{item.number}" styleClass="phoneInput" />
+						<p:commandButton icon="ui-icon-trash"
+							actionListener="#{userMB.deletePhone(item)}" update="@form" />
+
+					</p:column>
+				</p:dataTable>
+				<p:commandButton icon="ui-icon-plus"
+					actionListener="#{userMB.addPhone()}" update="@form" />
+				<p:commandButton action="#{userMB.update()}" value="Update"
+					oncomplete="PF('updateDlg').hide()" update="allUsers" />
+			</h:panelGrid>
 		</h:form>
 	</p:dialog>
 </body>
 </html>
+
