@@ -1,6 +1,8 @@
 # JavaEE7
 The exercise is oriented to incrementally generate and include changes on a distributed Java EE 6/7 web application.
 
+You can find the Script to create the tables and load some data in order to test the application, this is the database diagram:
+[![database.jpg](https://s24.postimg.org/cig4xudut/database.jpg)](https://postimg.org/image/d7yxa7ee9/)
 This is the home page, we can administrate Persons, *adding, updating or removing* Persons.
 [![inicio.jpg](https://s10.postimg.org/lix6inugp/inicio.jpg)](https://postimg.org/image/lvokoucqd/)
 New Person screen, in this page we can specify the Person data, like name, country, phone or phones, and known people.
