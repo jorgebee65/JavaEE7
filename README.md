@@ -1,6 +1,8 @@
 # JavaEE7
 The exercise is oriented to incrementally generate and include changes on a distributed Java EE 6/7 web application.
 
+The war was build with *Eclipse Version: Mars.1 Release (4.5.1)*, to deploy this war you need to change the user/password in the file src/META-INF/persistence.xml, in this exercise the database was *SQL EXPRESS Version: 10.52.4000.0*
+
 You can find the Script to create the tables and load some data in order to test the application, this is the database diagram:
 [![database.jpg](https://s24.postimg.org/cig4xudut/database.jpg)](https://postimg.org/image/d7yxa7ee9/)
 This is the home page, we can administrate Persons, *adding, updating or removing* Persons.
