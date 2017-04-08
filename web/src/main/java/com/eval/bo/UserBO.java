@@ -1,14 +1,15 @@
 package com.eval.bo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UserBO {
 	private Integer id;
 	private String name;
 	private Integer country;
 	private String sCountry;
-	private List<PhoneBO> phones;
+	private Set<PhoneBO> phones;
+	private Set<UserBO> knowns;
 	
 	public UserBO(){}
 
@@ -19,14 +20,14 @@ public class UserBO {
 		this.country = country;
 	}
 
-	public List<PhoneBO> getPhones() {
+	public Set<PhoneBO> getPhones() {
 		if(phones==null){
-			phones = new ArrayList<PhoneBO>();
+			phones = new HashSet<PhoneBO>();
 		}
 		return phones;
 	}
 
-	public void setPhones(List<PhoneBO> phones) {
+	public void setPhones(Set<PhoneBO> phones) {
 		this.phones = phones;
 	}
 
@@ -60,5 +61,47 @@ public class UserBO {
 
 	public void setsCountry(String sCountry) {
 		this.sCountry = sCountry;
+	}
+
+	public Set<UserBO> getKnowns() {
+		if(knowns==null){
+			knowns = new HashSet<UserBO>();
+		}
+		return knowns;
+	}
+
+	public void setKnowns(Set<UserBO> knowns) {
+		this.knowns = knowns;
+	}
+	
+
+	@Override
+	public String toString() {
+		return "UserBO [name=" + name + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserBO other = (UserBO) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

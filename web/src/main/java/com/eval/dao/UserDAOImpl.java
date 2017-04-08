@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import com.eval.bo.UserBO;
 import com.eval.builder.UserBuilder;
@@ -37,28 +38,64 @@ public class UserDAOImpl extends BaseDAOImpl {
 			super.entityManager.clear();
 			UserPO userPO = entityManager.find(UserPO.class, userBO.getId());
 			super.entityManager.getTransaction().begin();
+			userPO.getKnowns().clear();
+			super.entityManager.merge(userPO);
 			super.entityManager.remove(userPO);
 			super.entityManager.getTransaction().commit();
 			return true;
 		} catch (Exception ex) {
-			super.entityManager.getTransaction().rollback();
 			entityManager.clear();
 			ex.printStackTrace();
 		}
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean update(UserBO userBO) {
-		EntityTransaction tr = entityManager.getTransaction();
 		try {
 			entityManager.clear();
+			entityManager.getTransaction().begin();
 			UserPO userPO = UserBuilder.crearUsuarioPO(userBO);
-			tr.begin();
+			//Phones
+			List<PhonePO> oldPhones = null ;
+			if(userPO.getPhones()!=null && !userPO.getPhones().isEmpty()){
+			oldPhones = (List<PhonePO>)entityManager.createQuery("FROM PhonePO where owner = :user")
+					.setParameter("user", userPO)
+					.getResultList();
+			for(PhonePO newP : userPO.getPhones()){
+				if(oldPhones.contains(newP)){
+					entityManager.merge(newP);
+				}else{
+					entityManager.persist(newP);
+				}	
+			}
+			}
+			//Known People
+			if(userPO.getKnowns()!=null && !userPO.getKnowns().isEmpty()){
+			List<Integer> ids = new ArrayList<Integer>();
+			for(UserPO k : userPO.getKnowns()){
+				ids.add(k.getId());
+			}
+			@SuppressWarnings("unchecked")
+			List<UserPO> peopleBD = (List<UserPO>)entityManager.createQuery("FROM UserPO where id IN (:people)")
+					.setParameter("people", ids)
+					.getResultList();
+			userPO.getKnowns().clear();
+			userPO.getKnowns().addAll(peopleBD);
+			}
 			entityManager.merge(userPO);
-			tr.commit();
+			//RemoveOld
+			if(oldPhones!=null){
+				for(PhonePO oldP : oldPhones){
+					if(!userPO.getPhones().contains(oldP)){
+						entityManager.remove(oldP);
+					}	
+				}
+			}
+			entityManager.getTransaction().commit();
 			return true;
 		} catch (Exception ex) {
-			tr.rollback();
+			entityManager.getTransaction().rollback();
 			entityManager.clear();
 			ex.printStackTrace();
 		}
@@ -70,7 +107,23 @@ public class UserDAOImpl extends BaseDAOImpl {
 		try {
 			super.entityManager.clear();
 			super.entityManager.getTransaction().begin();
+			//Known People
+			if(userPO.getKnowns()!=null && !userPO.getKnowns().isEmpty()){
+			List<Integer> ids = new ArrayList<Integer>();
+			for(UserPO k : userPO.getKnowns()){
+				ids.add(k.getId());
+			}
+			@SuppressWarnings("unchecked")
+			List<UserPO> peopleBD = (List<UserPO>)entityManager.createQuery("FROM UserPO where id IN (:people)")
+					.setParameter("people", ids)
+					.getResultList();
+			userPO.getKnowns().clear();
 			super.entityManager.persist(userPO);
+			userPO.getKnowns().addAll(peopleBD);
+			super.entityManager.merge(userPO);
+			}else{
+			super.entityManager.persist(userPO);
+			}
 			super.entityManager.getTransaction().commit();
 		} catch (Exception ex) {
 			super.entityManager.getTransaction().rollback();

@@ -9,15 +9,19 @@
 	<h:outputStylesheet library="css" name="style.css" />
 </h:head>
 <body>
-	<p:messages id="globalMsgs" globalOnly="true" showDetail="true"
-		closable="true" autoUpdate="true" />
+	<p:growl id="growl" sticky="true" showDetail="true" />
 	<h:form id="allUsers">
-		<p:dataTable id="usersTbl" value="#{userMB.allUsers()}" var="user">
+		<p:dataTable id="usersTbl" value="#{userMB.lstUsers}" var="user">
 			<p:column headerText="Name">    #{user.name}  </p:column>
 			<p:column headerText="Country">    #{user.sCountry}  </p:column>
 			<p:column headerText="Phone">
 				<p:dataList value="#{user.phones}" var="item" type="unordered" itemType="none">
 					<p:outputLabel value="#{item.number}" />
+				</p:dataList>
+			</p:column>
+			<p:column headerText="Known People">
+				<p:dataList value="#{user.knowns}" var="item" type="unordered" itemType="none">
+					<p:outputLabel value="#{item.name}" />
 				</p:dataList>
 			</p:column>
 			<p:column headerText="Select">
@@ -53,21 +57,34 @@
 					</p:column>
 				</p:dataTable>
 				<p:commandButton icon="ui-icon-plus"
-					actionListener="#{userMB.addNewPhone()}" update="registrationForm" />
+					actionListener="#{userMB.addNewPhone()}" update="@form" />
+					<p:commandLink></p:commandLink>
+					<p:outputLabel value="People:" />
+						<p:selectManyMenu value="#{userMB.userBO.knowns}" converter="selectOneMenuConverter"
+                          var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
+                          <f:selectItems value="#{userMB.lstUsers}" var="usrTmp" itemValue="#{usrTmp}" itemLabel="#{usrTmp.name}" />
+                          	<p:column>
+				                <h:outputText value="#{t.name}" />
+				            </p:column>
+                        </p:selectManyMenu>
 			</h:panelGrid>
 			<p:commandButton action="#{userMB.register}" value="Register"
-				update="allUsers" />
+				update="allUsers growl" />
 		</h:form>
 	</p:dialog>
+	
+	
 	<p:confirmDialog id="deleteDialog" widgetVar="cnfDlg"
 		header="Confirmation" message="Are you sure to delete?">
 		<h:form>
 			<p:commandButton value="Yes" action="#{userMB.delete()}"
-				oncomplete="PF('cnfDlg').hide()" update="allUsers" />
+				oncomplete="PF('cnfDlg').hide()" update="allUsers growl" />
 			<p:commandButton value="No" onclick="cnfDlg.hide();" />
 		</h:form>
 	</p:confirmDialog>
-	<p:dialog widgetVar="updateDlg" modal="true" header="Update Form">
+	
+	
+	<p:dialog widgetVar="updateDlg" modal="true" header="Update Form" width="500px">
 		<h:form id="updateForm">
 			<h:panelGrid columns="2">
 				<p:outputLabel value="ID:" />
@@ -81,8 +98,7 @@
 					<f:selectItem itemLabel="UK" itemValue="2" />
 				</p:selectOneMenu>
 				<p:outputLabel value="Phones:" />
-				<p:dataTable value="#{userMB.userSelected.phones}" var="item"
-					styleClass="phoneColumn">
+				<p:dataTable value="#{userMB.userSelected.phones}" var="item">
 					<p:column>
 						<p:inputText value="#{item.number}" styleClass="phoneInput" />
 						<p:commandButton icon="ui-icon-trash"
@@ -92,8 +108,19 @@
 				</p:dataTable>
 				<p:commandButton icon="ui-icon-plus"
 					actionListener="#{userMB.addPhone()}" update="@form" />
+					<p:commandLink></p:commandLink>
+					<p:outputLabel value="People:" />
+				
+						<p:selectManyMenu value="#{userMB.userSelected.knowns}" converter="selectOneMenuConverter"
+                          var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
+                          <f:selectItems value="#{userMB.usersForMe()}" var="usrTmp" itemValue="#{usrTmp}" itemLabel="#{usrTmp.name}" />
+                          	<p:column>
+				                <h:outputText value="#{t.name}" />
+				            </p:column>
+                        </p:selectManyMenu>
 				<p:commandButton action="#{userMB.update()}" value="Update"
-					oncomplete="PF('updateDlg').hide()" update="allUsers" />
+					oncomplete="PF('updateDlg').hide()" update="allUsers growl" />
+					<p:commandLink></p:commandLink>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>

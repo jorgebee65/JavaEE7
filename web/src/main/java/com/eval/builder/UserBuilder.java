@@ -1,8 +1,5 @@
 package com.eval.builder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.eval.bo.PhoneBO;
 import com.eval.bo.UserBO;
 import com.eval.po.PhonePO;
@@ -19,6 +16,9 @@ public class UserBuilder {
          for(PhonePO ph : userPO.getPhones()){
         	 bo.getPhones().add(PhoneBuilder.createPhoneBO(ph));
          }
+         for(UserPO k : userPO.getKnowns()){
+        	 bo.getKnowns().add(new UserBO(k.getId(),k.getName(),k.getCountry()));
+         }
       return bo;
    }
 
@@ -29,6 +29,9 @@ public class UserBuilder {
          po.setCountry(userBO.getCountry());
          for(PhoneBO ph : userBO.getPhones()){
         	 po.addPhone(PhoneBuilder.createPhonePO(ph));
+         }
+         for(UserBO k : userBO.getKnowns()){
+        	 po.getKnowns().add(new UserPO(k.getId(), k.getName(), k.getCountry()));
          }
       return po;
    }
