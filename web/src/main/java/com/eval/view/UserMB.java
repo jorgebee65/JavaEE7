@@ -50,14 +50,9 @@ public class UserMB {
 		if (userSelected != null) {
 			if (dao.delete(userSelected)) {
 				this.lstUsers = dao.obtenerTodos();
-				String msg = "User Deleted successfully";
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+				RequestContext.getCurrentInstance().execute("swal('Deleted!','The Person was deleted succesfully.','success');");
 			}else{
-				String msg = "Delete Error";
-				String msgDtl = "The user can't be deleted because have one or more references with other users.";
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_WARN, msg,msgDtl ));
+				RequestContext.getCurrentInstance().execute("swal('Error!','The Person cant be deleted because has a relation with other people','error');");
 			}
 		}
 	}
@@ -81,6 +76,10 @@ public class UserMB {
 			}
 		}
 		return usersForMe;
+	}
+	
+	public void sampleAlert(){
+		RequestContext.getCurrentInstance().execute("swal('Good job!','You clicked the button!','success')");
 	}
 	
 	public void addPhone(){

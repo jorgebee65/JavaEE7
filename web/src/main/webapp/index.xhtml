@@ -5,75 +5,67 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Registration</title>
+	<title>Home</title>
 	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputScript library="js" name="scripts.js" />
+	<!-- Compiled and minified CSS -->
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" />
+		<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/sweetalert2/6.6.0/sweetalert2.min.css" />
+	<script type="text/javascript" src="https://use.fontawesome.com/7f2335bc73.js"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script 
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+		<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/sweetalert2/6.6.0/sweetalert2.min.js"></script>
+		
 </h:head>
-<body>
+<body styleClass="cyan lighten-2">
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#" class="brand-logo center">Person</a>
+			<ul id="nav-mobile" class="left hide-on-med-and-down">
+				<li><a href="sass.html"><i class="fa fa-address-book fa-2x"></i> Person	</a></li>
+			</ul>
+		</div>
+	</nav>
 	<p:growl id="growl" sticky="true" showDetail="true" />
 	<h:form id="allUsers">
 		<p:dataTable id="usersTbl" value="#{userMB.lstUsers}" var="user">
 			<p:column headerText="Name">    #{user.name}  </p:column>
 			<p:column headerText="Country">    #{user.sCountry}  </p:column>
 			<p:column headerText="Phone">
-				<p:dataList value="#{user.phones}" var="item" type="unordered" itemType="none">
+				<p:dataList value="#{user.phones}" var="item" type="unordered"
+					itemType="none">
 					<p:outputLabel value="#{item.number}" />
 				</p:dataList>
 			</p:column>
 			<p:column headerText="Known People">
-				<p:dataList value="#{user.knowns}" var="item" type="unordered" itemType="none">
+				<p:dataList value="#{user.knowns}" var="item" type="unordered"
+					itemType="none">
 					<p:outputLabel value="#{item.name}" />
-				</p:dataList>
+				</p:dataList>	
 			</p:column>
 			<p:column headerText="Select">
+			<!-- 
 				<p:commandButton icon="ui-icon-search"
 					actionListener="#{userMB.setUserSelected(user)}"
-					onclick="PF('updateDlg').show()" update="updateForm" />
+					onclick="PF('updateDlg').show()" update="updateForm" /> -->
 				<p:commandButton icon="ui-icon-trash"
-					actionListener="#{userMB.setUserSelected(user)}"
-					onclick="PF('cnfDlg').show()" />
+					actionListener="#{userMB.setUserSelected(user)}" oncomplete="deletePerson();" />
 			</p:column>
 		</p:dataTable>
+		<div class="input-field">
+			<p:commandLink styleClass="btn btn-large" action="register?faces-redirect=true">
+				<i class="fa fa-plus-square" aria-hidden="true"></i> Register
+			</p:commandLink>
+			<p:commandButton id="hdnBtn" action="#{userMB.delete()}" style="display:none" />
+		</div>
 	</h:form>
-	<p:commandButton onclick="PF('registrationDlg').show();"
-		value="Register" immediate="true" />
-	<p:dialog id="registrationDlgId" widgetVar="registrationDlg"
-		modal="true" header="Registration Form">
-		<h:form id="registrationForm">
-			<h:panelGrid columns="2">
-				<p:outputLabel value="Name:" />
-				<p:inputText value="#{userMB.userBO.name}" label="UserName" />
-				<p:outputLabel value="Country:" />
-				<p:selectOneMenu id="console" value="#{userMB.userBO.country}">
-					<f:selectItem itemLabel="US" itemValue="1" />
-					<f:selectItem itemLabel="UK" itemValue="2" />
-				</p:selectOneMenu>
-				<p:outputLabel value="Phones:" />
-				<p:dataTable value="#{userMB.userBO.phones}" var="item"
-					styleClass="phoneColumn">
-					<p:column>
-						<p:inputText value="#{item.number}" styleClass="phoneInput" />
-						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{userMB.deletePhone(item)}" update="@form" />
-					</p:column>
-				</p:dataTable>
-				<p:commandButton icon="ui-icon-plus"
-					actionListener="#{userMB.addNewPhone()}" update="@form" />
-					<p:commandLink></p:commandLink>
-					<p:outputLabel value="People:" />
-						<p:selectManyMenu value="#{userMB.userBO.knowns}" converter="selectOneMenuConverter"
-                          var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
-                          <f:selectItems value="#{userMB.lstUsers}" var="usrTmp" itemValue="#{usrTmp}" itemLabel="#{usrTmp.name}" />
-                          	<p:column>
-				                <h:outputText value="#{t.name}" />
-				            </p:column>
-                        </p:selectManyMenu>
-			</h:panelGrid>
-			<p:commandButton action="#{userMB.register}" value="Register"
-				update="allUsers growl" />
-		</h:form>
-	</p:dialog>
-	
-	
+
+
+
 	<p:confirmDialog id="deleteDialog" widgetVar="cnfDlg"
 		header="Confirmation" message="Are you sure to delete?">
 		<h:form>
@@ -82,48 +74,34 @@
 			<p:commandButton value="No" onclick="cnfDlg.hide();" />
 		</h:form>
 	</p:confirmDialog>
-	
-	
-	<p:dialog widgetVar="updateDlg" modal="true" header="Update Form" width="500px">
-		<h:form id="updateForm">
-			<h:panelGrid columns="2">
-				<p:outputLabel value="ID:" />
-				<p:inputText readonly="true" disabled="true"
-					value="#{userMB.userSelected.id}" />
-				<p:outputLabel value="Name:" />
-				<p:inputText value="#{userMB.userSelected.name}" label="UserName" />
-				<p:outputLabel value="Country:" />
-				<p:selectOneMenu id="console" value="#{userMB.userSelected.country}">
-					<f:selectItem itemLabel="US" itemValue="1" />
-					<f:selectItem itemLabel="UK" itemValue="2" />
-				</p:selectOneMenu>
-				<p:outputLabel value="Phones:" />
-				<p:dataTable value="#{userMB.userSelected.phones}" var="item">
-					<p:column>
-						<p:inputText value="#{item.number}" styleClass="phoneInput" />
-						<p:commandButton icon="ui-icon-trash"
-							actionListener="#{userMB.deletePhone(item)}" update="@form" />
 
-					</p:column>
-				</p:dataTable>
-				<p:commandButton icon="ui-icon-plus"
-					actionListener="#{userMB.addPhone()}" update="@form" />
-					<p:commandLink></p:commandLink>
-					<p:outputLabel value="People:" />
-				
-						<p:selectManyMenu value="#{userMB.userSelected.knowns}" converter="selectOneMenuConverter"
-                          var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
-                          <f:selectItems value="#{userMB.usersForMe()}" var="usrTmp" itemValue="#{usrTmp}" itemLabel="#{usrTmp.name}" />
-                          	<p:column>
-				                <h:outputText value="#{t.name}" />
-				            </p:column>
-                        </p:selectManyMenu>
-				<p:commandButton action="#{userMB.update()}" value="Update"
-					oncomplete="PF('updateDlg').hide()" update="allUsers growl" />
-					<p:commandLink></p:commandLink>
-			</h:panelGrid>
-		</h:form>
-	</p:dialog>
+
+	<footer class="page-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col l6 s12">
+					<h5 class="white-text">Footer Content</h5>
+					<p class="grey-text text-lighten-4">You can use rows and
+						columns here to organize your footer content.</p>
+				</div>
+				<div class="col l4 offset-l2 s12">
+					<h5 class="white-text">Links</h5>
+					<ul>
+						<li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+						<li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+						<li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+						<li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="footer-copyright">
+			<div class="container">
+				© 2014 Copyright Text <a class="grey-text text-lighten-4 right"
+					href="#!">More Links</a>
+			</div>
+		</div>
+	</footer>
 </body>
 </html>
 

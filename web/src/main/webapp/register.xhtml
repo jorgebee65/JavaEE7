@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Registration</title>
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputScript library="js" name="scripts.js" />
+	<!-- Compiled and minified CSS -->
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" />
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/sweetalert2/6.6.0/sweetalert2.min.css" />
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+	<script type="text/javascript"
+		src="https://use.fontawesome.com/7f2335bc73.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/sweetalert2/6.6.0/sweetalert2.min.js"></script>
+
+</h:head>
+<body>
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#" class="brand-logo center">Registration</a>
+			<ul id="nav-mobile" class="left hide-on-med-and-down">
+				<li><a href="sass.html"><i class="fa fa-address-book fa-2x"></i>
+						Person </a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="divider"></div>
+		<div class="row">
+			<div class="card col s12 m6 offset-m3">
+				<div class="card-content">
+					<span class="card-title">Register Person</span>
+					<h:form id="registrationForm">
+						<p:outputLabel for="personName" value="Name" />
+						<p:inputText id="personName" value="#{registerMB.userBO.name}"
+							label="UserName" />
+
+						<p:outputLabel for="personCountry" value="Country" />
+						<h:selectOneMenu id="personCountry"
+							value="#{registerMB.userBO.country}">
+							<f:selectItem itemLabel="US" itemValue="1" />
+							<f:selectItem itemLabel="UK" itemValue="2" />
+						</h:selectOneMenu>
+						<div class="row">
+						<p:dataTable id="tbPhones" value="#{registerMB.userBO.phones}" var="item" >
+						 <f:facet name="header">
+					        Phones
+					    </f:facet>
+							<p:column>
+								<p:outputLabel  value="Phone:" />
+								<p:inputText  value="#{item.number}" styleClass="phoneInput" />
+								<p:commandButton icon="ui-icon-trash"
+									actionListener="#{registerMB.deletePhone(item)}" update="@form" />
+							</p:column>
+						</p:dataTable>
+						</div>
+						<div class="row">
+							<p:commandLink styleClass="btn"  actionListener="#{registerMB.addNewPhone()}" update="tbPhones">
+								<i class="fa fa-phone" aria-hidden="true"></i> Add
+							</p:commandLink>
+						</div>
+						<div class="card-action">
+							<p:commandLink styleClass="btn btn-large" value="Register" />
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<footer class="page-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col l6 s12">
+					<h5 class="white-text">Footer Content</h5>
+					<p class="grey-text text-lighten-4">You can use rows and
+						columns here to organize your footer content.</p>
+				</div>
+				<div class="col l4 offset-l2 s12">
+					<h5 class="white-text">Links</h5>
+					<ul>
+						<li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+						<li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+						<li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+						<li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="footer-copyright">
+			<div class="container">
+				© 2014 Copyright Text <a class="grey-text text-lighten-4 right"
+					href="#!">More Links</a>
+			</div>
+		</div>
+	</footer>
+	<script>
+		$(document).on("ready", function() {
+			$('select').material_select();
+		});
+	</script>
+</body>
+</html>
+
