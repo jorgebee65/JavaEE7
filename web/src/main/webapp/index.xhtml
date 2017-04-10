@@ -33,8 +33,9 @@
 		</div>
 	</nav>
 	
+	<section>
 	<h:form id="allUsers">
-		<p:dataTable id="usersTbl" value="#{userMB.lstUsers}" var="user">
+		<p:dataTable id="usersTbl" value="#{userMB.lstUsers}" styleClass="striped" var="user">
 			<p:column headerText="Name">    #{user.name}  </p:column>
 			<p:column headerText="Country">    #{user.sCountry}  </p:column>
 			<p:column headerText="Phone">
@@ -70,7 +71,7 @@
 				style="display:none" />
 		</div>
 	</h:form>
-
+</section>
 
 	<footer class="page-footer">
 		<div class="container">
