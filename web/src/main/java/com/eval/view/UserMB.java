@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -15,7 +16,7 @@ import com.eval.bo.UserBO;
 import com.eval.dao.UserDAOImpl;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class UserMB {
 
 	private UserDAOImpl dao;
@@ -36,21 +37,13 @@ public class UserMB {
 
 
 
-	public void register() {
-		UserBO resp = dao.save(userBO);
-		if (resp != null) {
-			this.lstUsers = dao.obtenerTodos();
-			String msg = "User Registered successfully";
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-			RequestContext.getCurrentInstance().execute("PF('registrationDlg').hide();");
-		}
-	}
 
 	public void delete() {
 		if (userSelected != null) {
 			if (dao.delete(userSelected)) {
 				this.lstUsers = dao.obtenerTodos();
 				RequestContext.getCurrentInstance().execute("swal('Deleted!','The Person was deleted succesfully.','success');");
+				RequestContext.getCurrentInstance().update("allUsers");
 			}else{
 				RequestContext.getCurrentInstance().execute("swal('Error!','The Person cant be deleted because has a relation with other people','error');");
 			}
@@ -60,10 +53,7 @@ public class UserMB {
 	public void update() {
 		if (userSelected != null) {
 			if (dao.update(userSelected)) {
-				this.lstUsers = dao.obtenerTodos();
-				String msg = "User Updated successfully";
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+					RequestContext.getCurrentInstance().execute("registerSuccess();");
 			}
 		}
 	}
@@ -128,6 +118,11 @@ public class UserMB {
 
 	public void setLstUsers(List<UserBO> lstUsers) {
 		this.lstUsers = lstUsers;
+	}
+	
+	public String goUpdate(UserBO userSelected){
+		this.userSelected = userSelected;
+		return "update";
 	}
 
 }

@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsf/jstl/core">
 <h:head>
-	<title>Registration</title>
+	<title>Update</title>
 	<h:outputStylesheet library="css" name="style.css" />
 	<h:outputScript library="js" name="scripts.js" />
 	<!-- Compiled and minified CSS -->
@@ -25,7 +25,7 @@
 <body>
 	<nav>
 		<div class="nav-wrapper">
-			<a href="#" class="brand-logo center">Registration</a>
+			<a href="#" class="brand-logo center">Update</a>
 			<ul id="nav-mobile" class="left hide-on-med-and-down">
 				<li><a href="sass.html"><i class="fa fa-address-book fa-2x"></i>
 						Person </a></li>
@@ -38,40 +38,44 @@
 		<div class="row">
 			<div class="card col s12 m6 offset-m3">
 				<div class="card-content">
-					<span class="card-title">Register Person</span>
+					<span class="card-title">Update Person</span>
 					<h:form id="registrationForm">
+					
+					<p:outputLabel for="personID" value="ID:" />
+					<p:inputText readonly="true" id="personID" disabled="true" value="#{userMB.userSelected.id}" />
+					
 						<p:outputLabel for="personName" value="Name" />
-						<p:inputText id="personName" value="#{registerMB.userBO.name}"
+						<p:inputText id="personName" value="#{userMB.userSelected.name}"
 							label="UserName" />
 
 						<p:outputLabel for="personCountry" value="Country" />
 						<h:selectOneMenu id="personCountry"
-							value="#{registerMB.userBO.country}">
+							value="#{userMB.userSelected.country}">
 							<f:selectItem itemLabel="US" itemValue="1" />
 							<f:selectItem itemLabel="UK" itemValue="2" />
 						</h:selectOneMenu>
 						<div class="row">
 							<p:panel id="phonesPnl">
-								<ui:repeat value="#{registerMB.userBO.phones}" var="value">
+								<ui:repeat value="#{userMB.userSelected.phones}" var="value">
 							     <i class="fa fa-phone-square fa-2x col s2" aria-hidden="true"></i> <h:inputText styleClass="col s10" value="#{value.number}"/>
 								</ui:repeat>
 							</p:panel>
 						</div>
 						<div class="row">
 							<p:commandLink styleClass="btn"
-								actionListener="#{registerMB.addNewPhone()}" update="phonesPnl">
+								actionListener="#{userMB.addPhone()}" update="phonesPnl">
 								<i class="fa fa-phone" aria-hidden="true"></i> Add
 							</p:commandLink>
 						</div>
 
-						<h:selectManyCheckbox value="#{registerMB.userBO.knowns}"
+						<h:selectManyCheckbox value="#{userMB.userSelected.knowns}"
 							converter="selectOneMenuConverter">
-							<f:selectItems value="#{registerMB.lstUsers}" var="usrTmp"
+							<f:selectItems value="#{userMB.lstUsers}" var="usrTmp"
 								itemValue="#{usrTmp}" itemLabel="#{usrTmp.name}" />
 						</h:selectManyCheckbox>
 
 						<div class="card-action">
-							<p:commandLink styleClass="btn btn-large" actionListener="#{registerMB.register()}" value="Register" />
+							<p:commandLink styleClass="btn btn-large" value="Actualizar" actionListener="#{userMB.update()}" />
 						</div>
 						<p:commandButton id="hdnBtn" action="index.xhtml?faces-redirect=true" value="regresar" style="display:none" />
 					</h:form>

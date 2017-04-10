@@ -11,26 +11,28 @@
 	<!-- Compiled and minified CSS -->
 	<link rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css" />
-		<link rel="stylesheet"
+	<link rel="stylesheet"
 		href="https://cdn.jsdelivr.net/sweetalert2/6.6.0/sweetalert2.min.css" />
-	<script type="text/javascript" src="https://use.fontawesome.com/7f2335bc73.js"></script>
+	<script type="text/javascript"
+		src="https://use.fontawesome.com/7f2335bc73.js"></script>
 	<!-- Compiled and minified JavaScript -->
-	<script 
+	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
-		<script type="text/javascript"
+	<script type="text/javascript"
 		src="https://cdn.jsdelivr.net/sweetalert2/6.6.0/sweetalert2.min.js"></script>
-		
+
 </h:head>
-<body styleClass="cyan lighten-2">
+<body>
 	<nav>
 		<div class="nav-wrapper">
 			<a href="#" class="brand-logo center">Person</a>
 			<ul id="nav-mobile" class="left hide-on-med-and-down">
-				<li><a href="sass.html"><i class="fa fa-address-book fa-2x"></i> Person	</a></li>
+				<li><a href="sass.html"><i class="fa fa-address-book fa-2x"></i>
+						Person </a></li>
 			</ul>
 		</div>
 	</nav>
-	<p:growl id="growl" sticky="true" showDetail="true" />
+	
 	<h:form id="allUsers">
 		<p:dataTable id="usersTbl" value="#{userMB.lstUsers}" var="user">
 			<p:column headerText="Name">    #{user.name}  </p:column>
@@ -45,35 +47,29 @@
 				<p:dataList value="#{user.knowns}" var="item" type="unordered"
 					itemType="none">
 					<p:outputLabel value="#{item.name}" />
-				</p:dataList>	
+				</p:dataList>
 			</p:column>
 			<p:column headerText="Select">
-			<!-- 
-				<p:commandButton icon="ui-icon-search"
+				 
+				<p:commandLink action="#{userMB.goUpdate(user)}" styleClass="btn">
+					<i class="fa fa-pencil" aria-hidden="true"></i>
+					</p:commandLink>
+				<p:commandLink styleClass="btn"
 					actionListener="#{userMB.setUserSelected(user)}"
-					onclick="PF('updateDlg').show()" update="updateForm" /> -->
-				<p:commandButton icon="ui-icon-trash"
-					actionListener="#{userMB.setUserSelected(user)}" oncomplete="deletePerson();" />
+					oncomplete="deletePerson();">
+					<i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+				</p:commandLink>
 			</p:column>
 		</p:dataTable>
 		<div class="input-field">
-			<p:commandLink styleClass="btn btn-large" action="register?faces-redirect=true">
+			<p:commandLink styleClass="btn btn-large"
+				action="register?faces-redirect=true">
 				<i class="fa fa-plus-square" aria-hidden="true"></i> Register
 			</p:commandLink>
-			<p:commandButton id="hdnBtn" action="#{userMB.delete()}" style="display:none" />
+			<p:commandButton id="hdnBtn" action="#{userMB.delete()}"
+				style="display:none" />
 		</div>
 	</h:form>
-
-
-
-	<p:confirmDialog id="deleteDialog" widgetVar="cnfDlg"
-		header="Confirmation" message="Are you sure to delete?">
-		<h:form>
-			<p:commandButton value="Yes" action="#{userMB.delete()}"
-				oncomplete="PF('cnfDlg').hide()" update="allUsers growl" />
-			<p:commandButton value="No" onclick="cnfDlg.hide();" />
-		</h:form>
-	</p:confirmDialog>
 
 
 	<footer class="page-footer">

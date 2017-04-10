@@ -15,3 +15,21 @@ function deletePerson(){
 function confirmDeletePerson(){
 	$(document.getElementById('allUsers:hdnBtn')).click();
 }
+
+function registerSuccess(){
+	swal({
+		  title: 'Register Success!',
+		  text: 'You will be redirect to the home',
+		  type: 'success',
+		  timer: 3000
+		}).then(
+		  function () {},
+		  // handling the promise rejection
+		  function (dismiss) {
+		    if (dismiss === 'timer') {
+		      console.log('I was closed by the timer');
+		      $(document.getElementById('registrationForm:hdnBtn')).click();	      
+		    }
+		  }
+		)
+}
