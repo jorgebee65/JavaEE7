@@ -7,10 +7,11 @@
 		<class>com.eval.po.UserPO</class>
 		<class>com.eval.po.PhonePO</class>
 		<properties>
-        <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-        <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=DataBaseA"/>
-        <property name="javax.persistence.jdbc.user" value="mbportal"/>
-        <property name="javax.persistence.jdbc.password" value="mbp0rt4l398"/>
+        <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/DataBaseA"/>     
+        <property name="javax.persistence.jdbc.user" value="postgres"/>
+        <property name="javax.persistence.jdbc.password" value="p0$tgr35ssw"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
         <property name="show_sql" value="true"/>
     </properties>
 	</persistence-unit>
