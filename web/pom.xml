@@ -7,25 +7,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>web Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	<repositories>
-		<repository>
-			<id>sqlserver</id>
-			<name>sqlserver</name>
-			<url>http://clojars.org/repo/</url>
-		</repository>
-		<repository>
-			<id>prime-repo</id>
-			<name>PrimeFaces Maven Repository</name>
-			<url>http://repository.primefaces.org</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
+
 	<dependencies>
-		<dependency>
-			<groupId>org.primefaces.themes</groupId>
-			<artifactId>redmond</artifactId>
-			<version>1.0.10</version>
-		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -78,11 +61,13 @@
 			</exclusions>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.3-1102.jdbc41</version>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>9.4.1212</version>
 		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>web</finalName>
