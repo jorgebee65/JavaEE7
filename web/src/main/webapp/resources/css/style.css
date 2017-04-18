@@ -1,7 +1,10 @@
-.phoneColumn {
-	width: 250px;
-}
+ body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
 
-.phoneInput{
-	width:130px;
-}
+  main {
+    flex: 1 0 auto;
+  }
+      
