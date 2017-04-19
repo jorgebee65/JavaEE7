@@ -8,7 +8,7 @@
 		<class>com.eval.po.PhonePO</class>
 		<properties>
         <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/DataBaseB"/>     
+        <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/databasec"/>     
         <property name="javax.persistence.jdbc.user" value="postgres"/>
         <property name="javax.persistence.jdbc.password" value="p0$tgr35ssw"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
