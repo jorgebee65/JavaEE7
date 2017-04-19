@@ -3,11 +3,7 @@ CREATE TABLE public.ev_country
     id serial,
     description text NOT NULL,
     CONSTRAINT "EV_COUNTRY_pkey" PRIMARY KEY (id)
-)
-
-
-ALTER TABLE public.ev_country
-    OWNER to postgres;
+);
 
 
 CREATE TABLE public.ev_user
@@ -18,10 +14,8 @@ CREATE TABLE public.ev_user
     CONSTRAINT "EV_USER_pkey" PRIMARY KEY (id),
     CONSTRAINT cuntry FOREIGN KEY (country_id)
         REFERENCES public.ev_country (id)
-)
+);
 
-ALTER TABLE public.ev_user
-    OWNER to postgres;
 
 CREATE TABLE public.ev_phone
 (
@@ -31,11 +25,9 @@ CREATE TABLE public.ev_phone
     CONSTRAINT "EV_PHONE_pkey" PRIMARY KEY (id),
     CONSTRAINT "user" FOREIGN KEY (user_id)
         REFERENCES public.ev_user (id) 
-)
+);
 
 
-ALTER TABLE public.ev_phone
-    OWNER to postgres;
 
 CREATE TABLE public.ev_known
 (
@@ -46,10 +38,8 @@ CREATE TABLE public.ev_known
         REFERENCES public.ev_user (id),
     CONSTRAINT k_user FOREIGN KEY (user_id)
         REFERENCES public.ev_user (id)
-)
+);
 
-ALTER TABLE public.ev_known
-    OWNER to postgres;
 
     INSERT INTO public.ev_country(
      description)
