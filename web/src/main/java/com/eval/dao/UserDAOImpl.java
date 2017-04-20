@@ -3,9 +3,6 @@ package com.eval.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
-
 import com.eval.bo.UserBO;
 import com.eval.builder.UserBuilder;
 import com.eval.po.PhonePO;
@@ -76,7 +73,6 @@ public class UserDAOImpl extends BaseDAOImpl {
 			for(UserPO k : userPO.getKnowns()){
 				ids.add(k.getId());
 			}
-			@SuppressWarnings("unchecked")
 			List<UserPO> peopleBD = (List<UserPO>)entityManager.createQuery("FROM UserPO where id IN (:people)")
 					.setParameter("people", ids)
 					.getResultList();
