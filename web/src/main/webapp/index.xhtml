@@ -36,14 +36,15 @@
 	</h:form>
 	
 	<p:commandButton onclick="PF('registrationDlg').show();"
-		value="Register" immediate="true" />
+		value="Register" update="registrationForm"/>
 		
 	<p:dialog id="registrationDlgId" widgetVar="registrationDlg"
 		modal="true" header="Registration Form">
 		<h:form id="registrationForm">
 			<h:panelGrid columns="2">
 				<p:outputLabel value="Name:" />
-				<p:inputText value="#{userMB.userBO.name}" label="UserName" />
+				<p:inputText value="#{userMB.userBO.name}" label="UserName" maxlength="20"  
+				required="true" requiredMessage="User can't be empty"  />
 				<p:outputLabel value="Country:" />
 				<p:selectOneMenu id="console" value="#{userMB.userBO.country}">
 					<f:selectItem itemLabel="US" itemValue="1" />
@@ -53,7 +54,9 @@
 				<p:dataTable value="#{userMB.userBO.phones}" var="item"
 					styleClass="phoneColumn">
 					<p:column>
-						<p:inputText value="#{item.number}" styleClass="phoneInput" />
+						<p:inputText value="#{item.number}" styleClass="phoneInput"
+						maxlength="10"   
+						required="true" requiredMessage="Phone Numbert can't be empty"/>
 						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{userMB.deletePhone(item)}" update="@form" />
 					</p:column>
@@ -93,7 +96,8 @@
 				<p:inputText readonly="true" disabled="true"
 					value="#{userMB.userSelected.id}" />
 				<p:outputLabel value="Name:" />
-				<p:inputText value="#{userMB.userSelected.name}" label="UserName" />
+				<p:inputText value="#{userMB.userSelected.name}" label="UserName" maxlength="20"   
+				required="true" requiredMessage="User can't be empty" />
 				<p:outputLabel value="Country:" />
 				<p:selectOneMenu id="console" value="#{userMB.userSelected.country}">
 					<f:selectItem itemLabel="US" itemValue="1" />
@@ -102,7 +106,8 @@
 				<p:outputLabel value="Phones:" />
 				<p:dataTable value="#{userMB.userSelected.phones}" var="item">
 					<p:column>
-						<p:inputText value="#{item.number}" styleClass="phoneInput" />
+						<p:inputText value="#{item.number}" styleClass="phoneInput" 
+						maxlength="10" required="true" requiredMessage="Phone can't be empty" />
 						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{userMB.deletePhone(item)}" update="@form" />
 
@@ -121,7 +126,7 @@
 				            </p:column>
                         </p:selectManyMenu>
 				<p:commandButton action="#{userMB.update()}" value="Update"
-					oncomplete="PF('updateDlg').hide()" update="allUsers growl" />
+					 update="allUsers growl" />
 					<p:commandLink></p:commandLink>
 			</h:panelGrid>
 		</h:form>

@@ -3,12 +3,19 @@ package com.eval.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
+
 import com.eval.bo.UserBO;
 import com.eval.builder.UserBuilder;
 import com.eval.po.PhonePO;
 import com.eval.po.UserPO;
 
 public class UserDAOImpl extends BaseDAOImpl {
+	
+	final  Logger logger = LogManager.getLogger(UserDAOImpl.class);
+	 
 
 	@SuppressWarnings("unchecked")
 	public List<UserBO> obtenerTodos() {
@@ -40,9 +47,11 @@ public class UserDAOImpl extends BaseDAOImpl {
 			super.entityManager.remove(userPO);
 			super.entityManager.getTransaction().commit();
 			return true;
+		} catch (ConstraintViolationException cve){
+			logger.error("Error de Constraint: "+cve.getMessage());
+			entityManager.clear();
 		} catch (Exception ex) {
 			entityManager.clear();
-			ex.printStackTrace();
 		}
 		return false;
 	}
@@ -66,6 +75,16 @@ public class UserDAOImpl extends BaseDAOImpl {
 					entityManager.persist(newP);
 				}	
 			}
+			}else{
+				UserPO dbUser = (UserPO) entityManager.createQuery("FROM UserPO where id = :userId ")
+						.setParameter("userId", userPO.getId())
+						.getSingleResult();
+				if(!dbUser.getPhones().isEmpty()){
+					for(PhonePO oldP : dbUser.getPhones()){
+							entityManager.remove(oldP);
+					}
+				}
+				dbUser.setPhones(null);
 			}
 			//Known People
 			if(userPO.getKnowns()!=null && !userPO.getKnowns().isEmpty()){

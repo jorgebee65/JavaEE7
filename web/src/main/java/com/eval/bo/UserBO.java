@@ -1,6 +1,8 @@
 package com.eval.bo;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class UserBO {
@@ -8,7 +10,7 @@ public class UserBO {
 	private String name;
 	private Integer country;
 	private String sCountry;
-	private Set<PhoneBO> phones;
+	private List<PhoneBO> phones;
 	private Set<UserBO> knowns;
 	
 	public UserBO(){}
@@ -20,14 +22,14 @@ public class UserBO {
 		this.country = country;
 	}
 
-	public Set<PhoneBO> getPhones() {
+	public List<PhoneBO> getPhones() {
 		if(phones==null){
-			phones = new HashSet<PhoneBO>();
+			phones = new ArrayList<PhoneBO>();
 		}
 		return phones;
 	}
 
-	public void setPhones(Set<PhoneBO> phones) {
+	public void setPhones(List<PhoneBO> phones) {
 		this.phones = phones;
 	}
 

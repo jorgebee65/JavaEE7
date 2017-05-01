@@ -39,6 +39,7 @@ public class UserMB {
 	public void register() {
 		UserBO resp = dao.save(userBO);
 		if (resp != null) {
+			this.userBO = new UserBO();
 			this.lstUsers = dao.obtenerTodos();
 			String msg = "User Registered successfully";
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
@@ -69,6 +70,7 @@ public class UserMB {
 				String msg = "User Updated successfully";
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+				RequestContext.getCurrentInstance().execute("PF('updateDlg').hide();");
 			}
 		}
 	}

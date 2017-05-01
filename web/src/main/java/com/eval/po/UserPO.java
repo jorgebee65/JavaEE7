@@ -1,7 +1,9 @@
 package com.eval.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -37,7 +39,7 @@ public class UserPO implements Serializable {
 	private Integer country;
 
 	@OneToMany(mappedBy="owner", cascade = {CascadeType.PERSIST, CascadeType.REMOVE })
-	private Set<PhonePO> phones;
+	private List<PhonePO> phones;
 	
 	@ManyToMany(cascade = CascadeType.REMOVE)
 	@JoinTable(name="EV_KNOWN",
@@ -45,14 +47,14 @@ public class UserPO implements Serializable {
 		inverseJoinColumns={@JoinColumn(name="KNOWN_ID")})
 	private Set<UserPO> knowns = new HashSet<UserPO>();
 
-	public Set<PhonePO> getPhones() {
+	public List<PhonePO> getPhones() {
 		if(phones==null){
-			phones = new HashSet<PhonePO>();
+			phones = new ArrayList<PhonePO>();
 		}
 		return phones;
 	}
 
-	public void setPhones(Set<PhonePO> phones) {
+	public void setPhones(List<PhonePO> phones) {
 		this.phones = phones;
 	}
 
@@ -93,7 +95,7 @@ public class UserPO implements Serializable {
 
 	public void addPhone(PhonePO phone){
 		if(phones==null){
-			phones = new HashSet<PhonePO>();
+			phones = new ArrayList<PhonePO>();
 		}
 		if(phone.getOwner()==null || !phone.getOwner().equals(this)){
 			phone.setOwner(this);

@@ -27,6 +27,7 @@ public class UserBuilder {
          po.setId(userBO.getId());
          po.setName(userBO.getName());
          po.setCountry(userBO.getCountry());
+         if(userBO.getPhones()!=null && !userBO.getPhones().isEmpty() )
          for(PhoneBO ph : userBO.getPhones()){
         	 po.addPhone(PhoneBuilder.createPhonePO(ph));
          }
