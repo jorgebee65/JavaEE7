@@ -15,7 +15,7 @@
 			<p:column headerText="Name">    #{user.name}  </p:column>
 			<p:column headerText="Country">    #{user.sCountry}  </p:column>
 			<p:column headerText="Phone">
-				<p:dataList value="#{user.phones}" var="item" type="unordered" itemType="none">
+				<p:dataList value="#{user.phones}" var="item" type="unordered" itemType="none" emptyMessage="No Phones assigned." >
 					<p:outputLabel value="#{item.number}" />
 				</p:dataList>
 			</p:column>
@@ -54,8 +54,8 @@
 				<p:dataTable value="#{userMB.userBO.phones}" var="item"
 					styleClass="phoneColumn">
 					<p:column>
-						<p:inputText value="#{item.number}" styleClass="phoneInput"
-						maxlength="10"   
+						<p:inputMask value="#{item.number}" styleClass="phoneInput"
+						maxlength="14" mask="(999) 999-9999"   
 						required="true" requiredMessage="Phone Numbert can't be empty"/>
 						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{userMB.deletePhone(item)}" update="@form" />
@@ -106,8 +106,8 @@
 				<p:outputLabel value="Phones:" />
 				<p:dataTable value="#{userMB.userSelected.phones}" var="item">
 					<p:column>
-						<p:inputText value="#{item.number}" styleClass="phoneInput" 
-						maxlength="10" required="true" requiredMessage="Phone can't be empty" />
+						<p:inputMask value="#{item.number}" styleClass="phoneInput" 
+						maxlength="14" mask="(999) 999-9999" required="true" requiredMessage="Phone can't be empty" />
 						<p:commandButton icon="ui-icon-trash"
 							actionListener="#{userMB.deletePhone(item)}" update="@form" />
 
